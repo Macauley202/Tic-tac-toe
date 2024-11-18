@@ -1,31 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import GameGrid from "./GameGrid.js";
 
-// TODO: Import useState() hook
-
 function Game() {
+   // Step 1: Initialize the state
+   const [moves, setMoves] = useState(new Array(9).fill("")); // Tracks the moves on the board
+   const [turn, setTurn] = useState("X"); // Tracks the current player ('X' or 'O')
 
-   // TODO: Replace variables with state variables
-   const moves = new Array(9).fill("");
-   const turn = "X";
-  
+   // Step 2: Handle grid square clicks
    function gridClick(whichSquare) {
-      // TODO: Replace with code to set the move and turn
-      alert("Clicked on " + whichSquare);
+      // Check if the clicked square is empty, only allow a move if it's empty
+      if (moves[whichSquare] === "") {
+         const newMoves = [...moves];
+         newMoves[whichSquare] = turn; // Place the current player's move
+         setMoves(newMoves); // Update the moves state
+
+         // Switch the turn to the other player
+         setTurn(turn === "X" ? "O" : "X");
+      }
    }
 
-   // TODO: Add newGame() function here
-  
-   // TODO: Make New Game button to call newGame() when clicked
+   // Step 3: Reset the game state
+   function newGame() {
+      setMoves(new Array(9).fill("")); // Reset the board
+      setTurn("X"); // Reset the turn to X
+   }
+
    return (
       <>
-         <h1>Tic-Tac-Toe</h1>        
+         <h1>Tic-Tac-Toe</h1>
          <GameGrid moves={moves} click={gridClick} />
          <p>
             Turn: <strong className={turn}>{turn}</strong>
          </p>
          <p>
-            <button>New Game</button>
+            <button onClick={newGame}>New Game</button>
          </p>
       </>
    );
